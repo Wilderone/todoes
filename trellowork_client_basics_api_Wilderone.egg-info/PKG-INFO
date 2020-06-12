@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: trellowork-client-basics-api-Wilderone
+Version: 0.0.1
+Summary: lern how to work with api
+Home-page: https://github.com/Wilderone/todoes
+Author: Wilderone
+Author-email: prims@inbox.ru
+License: UNKNOWN
+Description: Р­С‚Рѕ РјРѕР№ РєРѕРЅСЃРѕР»СЊРЅС‹Р№ РєР»РёРµРЅС‚ РґР»СЏ Trello!  
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

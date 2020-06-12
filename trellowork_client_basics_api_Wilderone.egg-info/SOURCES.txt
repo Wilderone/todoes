@@ -1,0 +1,6 @@
+README.md
+setup.py
+trellowork_client_basics_api_Wilderone.egg-info/PKG-INFO
+trellowork_client_basics_api_Wilderone.egg-info/SOURCES.txt
+trellowork_client_basics_api_Wilderone.egg-info/dependency_links.txt
+trellowork_client_basics_api_Wilderone.egg-info/top_level.txt
