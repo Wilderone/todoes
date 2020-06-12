@@ -15,6 +15,13 @@ base_url = "https://api.trello.com/1/{}"
 board_id = "BderuOiC"
 
 
+def set_api(api_key, token, board_id_n=None):
+    api_key = api_key
+    token = token
+    if board_id_n:
+        board_id = board_id_n
+
+
 def column_data(tab):
     """Базовая обработка url"""
     return requests.get(base_url.format(
@@ -152,7 +159,9 @@ def move(name, column_name):
 if __name__ == "__main__":
     print('python trellwork.py help для справки')
     if sys.argv[1] == 'help':
-        print(f'\ncreate "col_name" "field_name" для создания записи \nmove "name" "col_name" для перемещения задач \nmk "board_name" "list_name" для создания списков\nБез аргументов для списка задач')
+        print(f'\nsetapi "api_key" "token" "board_id(optional) Для установки своих параметров подключения"\ncreate "col_name" "field_name" для создания записи \nmove "name" "col_name" для перемещения задач \nmk "board_name" "list_name" для создания списков\nБез аргументов для списка задач')
+    if sys.argv[1] == 'setapi':
+        set_api(sys.argv[2], sys.argv[3], sys.argv[4])
     if len(sys.argv) < 2:
         read()
     elif sys.argv[1] == 'create':
