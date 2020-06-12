@@ -1,1 +1,1 @@
-Это мой консольный клиент для Trello!  
+Запуск через python trellwork.py
