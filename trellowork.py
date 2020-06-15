@@ -35,7 +35,7 @@ def get_board_id(board_name):
     board_id = None
 
     for board in response:
-        print(board['name'])
+        # print(board['name'])
         if board['name'] == str(board_name):
             board_id = board['id']
     return board_id
@@ -53,8 +53,8 @@ def create_column(board_name, list_name):
     }
 
     response = requests.request('POST', base_url.format('lists'), params=query)
-
-    print(f'Список {response["name"]} создан.')
+    rt = json.loads(response.text)
+    print(f'Список {rt["name"]} создан.')
 
 
 def read():
@@ -132,23 +132,26 @@ def move(name, column_name):
         # эту простыню можно разбить на пару функций. Или сделать через классы. Но было лень :)
         print(f"Задачи {name} не найдено!")
         return
+    if len(same_name_tasks) == 1:
+        task_id = same_name_tasks[0]
     if len(same_name_tasks) > 1:
         print('По запросу найдены задачи: \n')
         for t in same_name_tasks:
             print(
                 f'{t["name"]} - ID {t["idShort"]} в списке {t["idList"]}\n')
-    choice = int(input('Введите ID требуемой задачи: '))
-    for i in same_name_tasks:
-        if i['idShort'] == int(choice):
-            task_id = i
-            break
-        else:
-            task_id = same_name_tasks[0]
+        choice = int(input('Введите ID требуемой задачи: '))
+        for i in same_name_tasks:
+            if i['idShort'] == int(choice):
+                task_id = i
+                break
+            else:
+                task_id = same_name_tasks[0]
 
     # Переберём данные обо всех колонках, пока не найдём ту, в которую мы будем перемещать задачу
     for column in column_data:
 
         if column['name'].split(' Задач:')[0].lower() == parsed_name.lower():
+
             # И выполним запрос к API для перемещения задачи в нужную колонку
             requests.put(base_url.format('cards') + '/' + task_id['id'] +
                          '/idList', data={'value': column['id'], **auth_params})
@@ -158,18 +161,22 @@ def move(name, column_name):
 
 if __name__ == "__main__":
     print('python trellwork.py help для справки')
-    if sys.argv[1] == 'help':
-        print(f'\nsetapi "api_key" "token" "board_id(optional) Для установки своих параметров подключения"\ncreate "col_name" "field_name" для создания записи \nmove "name" "col_name" для перемещения задач \nmk "board_name" "list_name" для создания списков\nБез аргументов для списка задач')
-    if sys.argv[1] == 'setapi':
-        set_api(sys.argv[2], sys.argv[3], sys.argv[4])
-    if len(sys.argv) < 2:
+
+    if len(sys.argv) == 1:
         read()
-    elif sys.argv[1] == 'create':
-        create(sys.argv[2], sys.argv[3])
-        update_all_cols()
-    elif sys.argv[1] == 'move':
-        move(sys.argv[2], sys.argv[3])
-        update_all_cols()
-    elif sys.argv[1] == 'mk':
-        create_column(sys.argv[2], sys.argv[3])
-        update_all_cols()
+    if len(sys.argv) > 1:
+
+        if sys.argv[1] == 'help':
+            print(f'\nsetapi "api_key" "token" "board_id(optional) Для установки своих параметров подключения"\ncreate "col_name" "field_name" для создания записи \nmove "name" "col_name" для перемещения задач \nmk "board_name" "list_name" для создания списков\nБез аргументов для списка задач')
+
+        elif sys.argv[1] == 'create':
+            create(sys.argv[2], sys.argv[3])
+            update_all_cols()
+        elif sys.argv[1] == 'move':
+            move(sys.argv[2], sys.argv[3])
+            update_all_cols()
+        elif sys.argv[1] == 'mk':
+            create_column(sys.argv[2], sys.argv[3])
+            update_all_cols()
+        elif sys.argv[1] == 'setapi':
+            set_api(sys.argv[2], sys.argv[3], sys.argv[4])
